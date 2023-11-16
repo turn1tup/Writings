@@ -42,10 +42,12 @@ current_y = None
 current_m = None
 for w in writings:
     if current_y is None or w.y != current_y:
-        print(f"## {w.y}年")
+        print(f"## {w.y}年\r\n")
         current_y = w.y
         current_m = None
     if current_m is None or w.m != current_m:
-        print(f"### {w.m}月")
+        print(f"### {w.m}月\r\n")
         current_m = w.m
-    print(f"[{os.path.basename(w.file).split('.')[0]}]({w.file})")
+    line = f"[{os.path.basename(w.file).split('.')[0]}]({w.file})\r\n"
+    line = line.replace("\\","/")
+    print(line)

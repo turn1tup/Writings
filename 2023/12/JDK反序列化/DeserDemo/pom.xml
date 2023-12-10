@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.test</groupId>
+    <artifactId>DeserDemo</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>Demo1</module>
+        <module>Demo2</module>
+        <module>Demo3</module>
+        <module>Demo3-2</module>
+        <module>Common</module>
+        <module>DemoTestCC</module>
+        <module>Webapp</module>
+    </modules>
+<!--    <parent>-->
+<!--        <groupId>org.springframework.boot</groupId>-->
+<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
+<!--        &lt;!&ndash;latest&ndash;&gt;-->
+<!--        &lt;!&ndash;    <version>2.2.0.RELEASE</version>&ndash;&gt;-->
+<!--        <version>2.7.12</version>-->
+<!--    </parent>-->
+<!--    <dependencies>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-web</artifactId>-->
+
+<!--        </dependency>-->
+<!--    </dependencies>-->
+</project>

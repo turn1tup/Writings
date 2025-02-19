@@ -1,5 +1,26 @@
 # Writings
-博客文章、分享过的议题等
+
+github.io博客不再更新，此后都放这里~ https://github.com/turn1tup/Writings 
+
+## 2025年
+
+### 1月
+
+[PAST：被动式检测水平越权漏洞](./2025/1/PAST：被动式检测水平越权漏洞.md)
+
+## 2024年
+
+### 8月
+
+[Tomcat信息泄露漏洞分析CVE-2024-21733](./2024/8/Tomcat信息泄露漏洞分析CVE-2024-21733/Tomcat信息泄露漏洞分析CVE-2024-21733.md)
+
+### 5月
+
+[SpringWeb下的路径鉴权问题](./2024/5/SpringWeb下的路径鉴权问题.md)
+
+### 3月
+
+[大语言模型入门理解（转制）](./2024/3/大语言模型入门理解（转制）/大语言模型入门理解（转制）.md)
 
 ## 2023年
 
@@ -8,6 +29,8 @@
 [Java模板注入](./2023/12/Java模板注入/Java模板注入.md)
 
 [JDK反序列化](./2023/12/JDK反序列化/JDK反序列化.md)
+
+[剖析Dongtai IAST的实现](./2023/12/剖析Dongtai IAST的实现/剖析Dongtai IAST的实现.md)
 
 ### 11月
 
@@ -133,5 +156,3 @@
 
 [SQL注入类型详解](./2018/1/SQL注入类型详解/SQL注入类型详解.md)
 
-
-Process finished with exit code 0

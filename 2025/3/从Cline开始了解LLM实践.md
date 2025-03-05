@@ -20,13 +20,13 @@ https://api-docs.deepseek.com/zh-cn/guides/multi_round_chat
 
 cline通过completions调用进行对话：
 
-<img src="Cline代码助手梳理笔记.assets/image-20250226150643037.png" alt="image-20250226150643037" style="zoom: 50%;" />
+<img src="从Cline开始了解LLM实践.assets/image-20250226150643037.png" alt="image-20250226150643037" style="zoom: 50%;" />
 
 cline多次对话中发送的数据，将之前的数据合并发送，发送的流量会累加：
 
-<img src="Cline代码助手梳理笔记.assets/image-20250226152957650.png" alt="image-20250226152957650" style="zoom:67%;" />
+<img src="从Cline开始了解LLM实践.assets/image-20250226152957650.png" alt="image-20250226152957650" style="zoom:67%;" />
 
-<img src="Cline代码助手梳理笔记.assets/image-20250226152820093.png" alt="image-20250226152820093" style="zoom:67%;" />
+<img src="从Cline开始了解LLM实践.assets/image-20250226152820093.png" alt="image-20250226152820093" style="zoom:67%;" />
 
 
 
@@ -36,17 +36,17 @@ cline通过在sytem提示中构造一系列的XML标签说明从而提供给LLM�
 
 https://platform.openai.com/docs/guides/function-calling
 
-<img src="Cline代码助手梳理笔记.assets/function-calling-diagram-steps.png" alt="function-calling-diagram-steps" style="zoom: 15%;" />
+<img src="从Cline开始了解LLM实践.assets/function-calling-diagram-steps.png" alt="function-calling-diagram-steps" style="zoom: 15%;" />
 
 但在翻阅更多LLM产品后，我们可以了解到，不是所有的LLM都支持function calling，此外，funtion calling自身也会有各种BUG。
 
 百炼上的模型可不只这些，只有部分支持：
 
-<img src="Cline代码助手梳理笔记.assets/image-20250226171137334.png" alt="image-20250226171137334" style="zoom:50%;" />
+<img src="从Cline开始了解LLM实践.assets/image-20250226171137334.png" alt="image-20250226171137334" style="zoom:50%;" />
 
 deepseek文档中坦言function calling不稳定（当然，system prompt中提供工具的方式也不一定稳定，cline通过few-shot与检查llm回答来强制llm的回复格式）
 
-<img src="Cline代码助手梳理笔记.assets/image-20250226171357401.png" alt="image-20250226171357401" style="zoom:50%;" />
+<img src="从Cline开始了解LLM实践.assets/image-20250226171357401.png" alt="image-20250226171357401" style="zoom:50%;" />
 
 ### 提示词role
 
@@ -67,9 +67,9 @@ https://platform.openai.com/docs/guides/text-generation#messages-and-roles
 
 system prompt主要呈现为markdown结构，通过一级标题将提示词划方为不同部分，本文这里将提示词保存为markdown文件，通过typeora可以看到相应的提示词目录结构；具体的提示词内容也是markdown格式，后面关于user角色的一些会话如tool调用结果cline也在尽力往markdown风格靠。
 
-![image-20250226185048092](Cline代码助手梳理笔记.assets/image-20250226185048092.png)
+![image-20250226185048092](从Cline开始了解LLM实践.assets/image-20250226185048092.png)
 
-<img src="Cline代码助手梳理笔记.assets/image-20250226185605147.png" alt="image-20250226185605147" style="zoom:67%;" />
+<img src="从Cline开始了解LLM实践.assets/image-20250226185605147.png" alt="image-20250226185605147" style="zoom:67%;" />
 
 
 
@@ -79,13 +79,13 @@ system prompt主要呈现为markdown结构，通过一级标题将提示词划�
 
 在[open ai tokenizer](https://platform.openai.com/tokenizer)或其他网站上可以计算对应的token大小，[cline原版英文版本](https://github.com/cline/cline/blob/main/src/core/prompts/system.ts)tokens大约为10909：
 
-<img src="Cline代码助手梳理笔记.assets/image-20250226161556849.png" alt="image-20250226161556849" style="zoom:67%;" />
+<img src="从Cline开始了解LLM实践.assets/image-20250226161556849.png" alt="image-20250226161556849" style="zoom:67%;" />
 
 中文相对英文的香农信息熵会更高，所以我认为这段英文转为中文后token会小，但实际好像并非如此。
 
 计算[cline的中文提示词](https://github.com/HybridTalentComputing/cline-chinese/blob/main/src/core/prompts/system.ts)的token size，可以看到字符数是少了，token大小反而增加了，但我们回头再看上面的英文提示词token计算图，图中明确表示token是与单词相关而非字母，所以这个token大小与香农信息熵大小不符问题也就了然。
 
-<img src="Cline代码助手梳理笔记.assets/image-20250226162538179.png" alt="image-20250226162538179" style="zoom:67%;" />
+<img src="从Cline开始了解LLM实践.assets/image-20250226162538179.png" alt="image-20250226162538179" style="zoom:67%;" />
 
 
 
@@ -93,17 +93,17 @@ system prompt主要呈现为markdown结构，通过一级标题将提示词划�
 
 ### SYSTEM提示词入参
 
-![image-20250226175704120](Cline代码助手梳理笔记.assets/image-20250226175704120.png)
+![image-20250226175704120](从Cline开始了解LLM实践.assets/image-20250226175704120.png)
 
 - cwd为用户当前vs code打开的项目的路径，会拼接项目的绝对路径到system prompt中
 - supportsComputerUse为true时，system prompt会赋予llm包括使用浏览器的能力
 - mpcHub为mcp服务器一系列配置
 
-![image-20250226180208533](Cline代码助手梳理笔记.assets/image-20250226180208533.png)
+![image-20250226180208533](从Cline开始了解LLM实践.assets/image-20250226180208533.png)
 
-![image-20250226180059649](Cline代码助手梳理笔记.assets/image-20250226180059649.png)
+![image-20250226180059649](从Cline开始了解LLM实践.assets/image-20250226180059649.png)
 
-![image-20250226180121617](Cline代码助手梳理笔记.assets/image-20250226180121617.png)
+![image-20250226180121617](从Cline开始了解LLM实践.assets/image-20250226180121617.png)
 
 ### 指示工具调用
 
@@ -148,7 +148,7 @@ plan_mode_response：响应用户的询问，努力规划解决用户任务的�
 
 可以看到，cline提供了5个example给llm：
 
-<img src="Cline代码助手梳理笔记.assets/image-20250226175146760.png" alt="image-20250226175146760" style="zoom: 67%;" />
+<img src="从Cline开始了解LLM实践.assets/image-20250226175146760.png" alt="image-20250226175146760" style="zoom: 67%;" />
 
 ### 核心提示词
 

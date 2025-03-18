@@ -20,13 +20,13 @@ https://api-docs.deepseek.com/zh-cn/guides/multi_round_chat
 
 cline通过completions调用进行对话：
 
-<img src="从Cline开始了解LLM实践.assets/image-20250226150643037.png" alt="image-20250226150643037" style="zoom: 50%;" />
+<img src="Cline代码助手梳理笔记.assets/image-20250226150643037.png" alt="image-20250226150643037" style="zoom: 50%;" />
 
 cline多次对话中发送的数据，将之前的数据合并发送，发送的流量会累加：
 
-<img src="从Cline开始了解LLM实践.assets/image-20250226152957650.png" alt="image-20250226152957650" style="zoom:67%;" />
+<img src="Cline代码助手梳理笔记.assets/image-20250226152957650.png" alt="image-20250226152957650" style="zoom:67%;" />
 
-<img src="从Cline开始了解LLM实践.assets/image-20250226152820093.png" alt="image-20250226152820093" style="zoom:67%;" />
+<img src="Cline代码助手梳理笔记.assets/image-20250226152820093.png" alt="image-20250226152820093" style="zoom:67%;" />
 
 
 
@@ -36,17 +36,17 @@ cline通过在sytem提示中构造一系列的XML标签说明从而提供给LLM�
 
 https://platform.openai.com/docs/guides/function-calling
 
-<img src="从Cline开始了解LLM实践.assets/function-calling-diagram-steps.png" alt="function-calling-diagram-steps" style="zoom: 15%;" />
+<img src="Cline代码助手梳理笔记.assets/function-calling-diagram-steps.png" alt="function-calling-diagram-steps" style="zoom: 15%;" />
 
 但在翻阅更多LLM产品后，我们可以了解到，不是所有的LLM都支持function calling，此外，funtion calling自身也会有各种BUG。
 
 百炼上的模型可不只这些，只有部分支持：
 
-<img src="从Cline开始了解LLM实践.assets/image-20250226171137334.png" alt="image-20250226171137334" style="zoom:50%;" />
+<img src="Cline代码助手梳理笔记.assets/image-20250226171137334.png" alt="image-20250226171137334" style="zoom:50%;" />
 
 deepseek文档中坦言function calling不稳定（当然，system prompt中提供工具的方式也不一定稳定，cline通过few-shot与检查llm回答来强制llm的回复格式）
 
-<img src="从Cline开始了解LLM实践.assets/image-20250226171357401.png" alt="image-20250226171357401" style="zoom:50%;" />
+<img src="Cline代码助手梳理笔记.assets/image-20250226171357401.png" alt="image-20250226171357401" style="zoom:50%;" />
 
 ### 提示词role
 
@@ -63,15 +63,17 @@ https://platform.openai.com/docs/guides/text-generation#messages-and-roles
 
 ## 提示词构造
 
-### markdown风格
+### markdown style
 
 system prompt主要呈现为markdown结构，通过一级标题将提示词划方为不同部分，本文这里将提示词保存为markdown文件，通过typeora可以看到相应的提示词目录结构；具体的提示词内容也是markdown格式，后面关于user角色的一些会话如tool调用结果cline也在尽力往markdown风格靠。
 
-![image-20250226185048092](从Cline开始了解LLM实践.assets/image-20250226185048092.png)
+![image-20250226185048092](Cline代码助手梳理笔记.assets/image-20250226185048092.png)
 
-<img src="从Cline开始了解LLM实践.assets/image-20250226185605147.png" alt="image-20250226185605147" style="zoom:67%;" />
+<img src="Cline代码助手梳理笔记.assets/image-20250226185605147.png" alt="image-20250226185605147" style="zoom:67%;" />
 
+值得注意的时，有一些提示词不以“#title”形式出现，而是通过”===“ 开头而后开始出现，而出现的内容通常是“多次” 的一种内容强调，比如在说明工具的具体使用格式前先通过一段话强调一下可以在用户响应中获取工具的输出，并且要step-by-step来完成任务（而阅读cline system pormpt可知整个提示词前后提醒llm应该如何工作）。 笔者在编写system prompt时也喜欢照此模式。
 
+![image-20250318170751935](从Cline开始了解LLM实践.assets/image-20250318170751935.png)
 
 ### token size
 
@@ -79,35 +81,39 @@ system prompt主要呈现为markdown结构，通过一级标题将提示词划�
 
 在[open ai tokenizer](https://platform.openai.com/tokenizer)或其他网站上可以计算对应的token大小，[cline原版英文版本](https://github.com/cline/cline/blob/main/src/core/prompts/system.ts)tokens大约为10909：
 
-<img src="从Cline开始了解LLM实践.assets/image-20250226161556849.png" alt="image-20250226161556849" style="zoom:67%;" />
+<img src="Cline代码助手梳理笔记.assets/image-20250226161556849.png" alt="image-20250226161556849" style="zoom:67%;" />
 
 中文相对英文的香农信息熵会更高，所以我认为这段英文转为中文后token会小，但实际好像并非如此。
 
 计算[cline的中文提示词](https://github.com/HybridTalentComputing/cline-chinese/blob/main/src/core/prompts/system.ts)的token size，可以看到字符数是少了，token大小反而增加了，但我们回头再看上面的英文提示词token计算图，图中明确表示token是与单词相关而非字母，所以这个token大小与香农信息熵大小不符问题也就了然。
 
-<img src="从Cline开始了解LLM实践.assets/image-20250226162538179.png" alt="image-20250226162538179" style="zoom:67%;" />
+<img src="Cline代码助手梳理笔记.assets/image-20250226162538179.png" alt="image-20250226162538179" style="zoom:67%;" />
 
 
 
 
 
-### SYSTEM提示词入参
+### system prompt arg
 
-![image-20250226175704120](从Cline开始了解LLM实践.assets/image-20250226175704120.png)
+system prompt的生成需要通过几个变量进行格式化，这里简单了解一下cline针对system prompt做了什么灵活配置
+
+
+
+![image-20250226175704120](Cline代码助手梳理笔记.assets/image-20250226175704120.png)
 
 - cwd为用户当前vs code打开的项目的路径，会拼接项目的绝对路径到system prompt中
 - supportsComputerUse为true时，system prompt会赋予llm包括使用浏览器的能力
 - mpcHub为mcp服务器一系列配置
 
-![image-20250226180208533](从Cline开始了解LLM实践.assets/image-20250226180208533.png)
+![image-20250226180208533](Cline代码助手梳理笔记.assets/image-20250226180208533.png)
 
-![image-20250226180059649](从Cline开始了解LLM实践.assets/image-20250226180059649.png)
+![image-20250226180059649](Cline代码助手梳理笔记.assets/image-20250226180059649.png)
 
-![image-20250226180121617](从Cline开始了解LLM实践.assets/image-20250226180121617.png)
+![image-20250226180121617](Cline代码助手梳理笔记.assets/image-20250226180121617.png)
 
-### 指示工具调用
+### 工具调用指令
 
-cline在system提示词中提供给LLM的工具有如下类型，针对有必要说明的部分笔者进行额外描述：
+在具体讲解cline提示词内容之前，简单看看cline提供给LLM的tools：
 
 ```
 execute_command
@@ -144,27 +150,41 @@ plan_mode_response：响应用户的询问，努力规划解决用户任务的�
     </plan_mode_response>
 ```
 
-### few-shot
 
-可以看到，cline提供了5个example给llm：
-
-<img src="从Cline开始了解LLM实践.assets/image-20250226175146760.png" alt="image-20250226175146760" style="zoom: 67%;" />
 
 ### 核心提示词
 
 ART是ReAct的超集，ReAct是CoT的超集，整个工程可以看作ART的一种实现，我们来看看一些关键的提示词。
 
-开头提示词强调CoT，我们也可以让其使用ToT思维树。之前在一些代码审计案例中，ToT效果会比CoT更强，但是LLM输出的reasoning会占用很多token。
+#### 强调CoT
+
+开头提示词强调CoT，我们也可以让其使用ToT思维树。之前在一些代码审计案例中，ToT效果会比CoT更强，但是在LLM输出的reasoning会占用很多token（推理类的模型reasoning不占用token但是价格很贵，而且测试下来推理类模型在我们的场景下并没有优势）。
 
 <img src="从Cline开始了解LLM实践.assets/image-20250228092537944.png" alt="image-20250228092537944" style="zoom:67%;" />
+
+除了开头强调 step-by-step，在提示词末尾的几大段内容中，说明了大模型所拥有的能力、规则禁忌、任务目标。
+
+![image-20250318165126180](从Cline开始了解LLM实践.assets/image-20250318165126180.png)
+
+![image-20250318171824925](从Cline开始了解LLM实践.assets/image-20250318171824925.png)
+
+![image-20250318171844738](从Cline开始了解LLM实践.assets/image-20250318171844738.png)
+
+#### 详细说明tool use
 
 在工具的使用这一核心指导中，强调在thinking标签中输出当前已有信息与下一步要做什么；强调选择当前最合适的工具；强调每个消息只能使用一个工具，可以通过迭代方式完成一个任务。这样也方便
 
 <img src="从Cline开始了解LLM实践.assets/image-20250228093237931.png" alt="image-20250228093237931" style="zoom:80%;" />
 
+#### few-shot
+
+可以看到，cline提供了5个example给llm，这点十分关键，但是由于不同模型的“记忆力”有强弱，项目的system prompt十分长，所以这里会在较强的模型下效果会很好。在实际测试中，笔者也会通过这种方式来矫正模型的理解。
+
+<img src="Cline代码助手梳理笔记.assets/image-20250226175146760.png" alt="image-20250226175146760" style="zoom: 67%;" />
+
 ### 多模态
 
-用户会话中有image变量，但是目前测试的模型不支持多模块，这块先暂时不看。
+用户会话中有image变量，但是目前测试的模型不支持多模块。
 
 ## 代码实现
 
@@ -174,7 +194,7 @@ ART是ReAct的超集，ReAct是CoT的超集，整个工程可以看作ART的一�
 
 当用户创建task，给出一个问题后，cline会创建一个影子git，路径为 `%HOMEPATH%\AppData\Roaming\Code\User\globalStorage\saoudrizwan.claude-dev\tasks\任务ID\checkpoints\.git`
 
-由于cline可以被用户授权来修改文件，所以这里可能是进行代码备份便于回退。
+由于cline可以被用户授权来修改文件，所以这里是进行代码备份便于回退。
 
 ![image-20250228101229445](从Cline开始了解LLM实践.assets/image-20250228101229445.png)
 
@@ -194,7 +214,7 @@ ART是ReAct的超集，ReAct是CoT的超集，整个工程可以看作ART的一�
 
 <img src="从Cline开始了解LLM实践.assets/image-20250228172752339.png" alt="image-20250228172752339" style="zoom:67%;" />
 
-- 
+
 
 #### userContent
 
@@ -213,6 +233,10 @@ ART是ReAct的超集，ReAct是CoT的超集，整个工程可以看作ART的一�
 HTTP链接就是替换为具体的网页内容，路径则是找到当前项目中关于该路径都有哪些文件夹或该文件内容是什么，这个problem笔者暂时还不理解具体意图。
 
 ![image-20250228160326603](从Cline开始了解LLM实践.assets/image-20250228160326603.png)
+
+loadContext拿到的environment_details标签内容，展示当前用户正在查看的代码文件、用户打开了哪些代码文件、当前日期、当前工作目录下的所有文件、当前cline工作模式
+
+![image-20250306151349396](从Cline开始了解LLM实践.assets/image-20250306151349396.png)
 
 #### 内容块转markdown
 
@@ -254,7 +278,9 @@ HTTP链接就是替换为具体的网页内容，路径则是找到当前项目�
 
 #### attemptApiRequest
 
-调用 attemptApiRequest 请求LLM API接口，方法中处理了context token超出限制的情况，本文在 4.2.5. 中对此进行说明。
+通过调用 attemptApiRequest 请求相应的大模型API接口，在attemptApiRequest中也处理了context token超出限制的情况，本文在下一小节对此进行说明。
+
+在流式模式下，拿到一个stream对象，从该对象逐步获取数据，此外，该stream对象非原生openai sdk的对象，通过判断chunk.type类型，分别处理 token使用情况（usage）、推理（reasoning，应该只有少部分推理模型才有）、大模型真正的回复内容（text）。
 
 针对api的text响应内容，调用 parseAssistantMessage 对LLM答复的tool标签进行解析处理，并进行具体的调用。
 
@@ -301,8 +327,6 @@ messages.slice(end + 1)：获取 `messages` 数组中索引 **`end+1` 及之后�
   <img src="从Cline开始了解LLM实践.assets/image-20250228143347178.png" alt="image-20250228143347178" style="zoom: 67%;" />
 
 - 删除消息时保留 user+assistant 这样成对的结构
-
-- 
 
 ```typescript
 /*
@@ -363,7 +387,17 @@ export function getNextTruncationRange(
 }
 ```
 
+## 实践
 
+当我们让LLM直接查找整个项目的越权漏洞问题，LLM能找出漏洞，但是细节上有出入，比如 orderDetailPage2的漏洞影响内容有问题
+
+![image-20250312093424845](从Cline开始了解LLM实践.assets/image-20250312093424845.png)
+
+开启一个新completaions让LLM单独对orderDetailPage2进行审计，审计结果时完全正确的：
+
+![image-20250312093420045](从Cline开始了解LLM实践.assets/image-20250312093420045.png)
+
+![image-20250312094652755](从Cline开始了解LLM实践.assets/image-20250312094652755.png)
 
 ## 总结
 

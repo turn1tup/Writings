@@ -51,7 +51,7 @@ for w in writings:
     if current_m is None or w.m != current_m:
         fw.write(f"### {w.m}月\r\n")
         current_m = w.m
-    line = f"[{os.path.basename(w.file).split('.')[0]}]({w.file})\r\n"
+    line = f"[{os.path.basename(w.file).split('.')[0]}]({w.file.replace('\x20','%20')})\r\n"
     line = line.replace("\\","/")
     fw.write(line)
 fw.close()

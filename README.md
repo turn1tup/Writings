@@ -2,7 +2,7 @@
 github.io博客不再更新，此后都放这里~ https://github.com/turn1tup/Writings 
 ## 2025年
 ### 7月
-[LLM  Code Review Practice](./2025/7/LLM  Code Review Practice.md)
+[LLM Code Review Practice](./2025/7/LLM%20Code%20Review%20Practice.md)
 ### 3月
 [从Cline开始了解LLM实践](./2025/3/从Cline开始了解LLM实践.md)
 ### 1月

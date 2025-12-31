@@ -1,6 +1,8 @@
 # Writings
 github.io博客不再更新，此后都放这里~ https://github.com/turn1tup/Writings 
 ## 2025年
+### 12月
+[基于LLM的水平越权漏洞白盒实践](./2025/12/基于LLM的水平越权漏洞白盒实践.md)
 ### 7月
 [LLM  Code Review Practice](./2025/7/LLM%20%20Code%20Review%20Practice.md)
 ### 3月
